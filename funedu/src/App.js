@@ -2,12 +2,14 @@ import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Main from './components/Main';
 
 function App() {
   return (
-    <div className="header-bg">
+    <div className="app">
       <Header></Header>
-      <Footer></Footer>
+      <Main>main content</Main>
+      <Footer>Footer</Footer>
     </div>
   );
 }
