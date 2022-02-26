@@ -7,7 +7,7 @@ export const userSlice = createSlice({
         userId: null,
         name: '',
         login: '',
-        avatar: ''
+        avatar: 'https://picsum.photos/id/3/80/80'
     },
   },
   reducers: {
