@@ -1,6 +1,5 @@
 
-import React, { useState, useEffect } from "react";
-import "./Header.css";
+import React, { useState, useEffect, useRef } from "react";
 import { SiKhanacademy } from "react-icons/si";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -8,46 +7,145 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
+// import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import MenuItem from '@mui/material/MenuItem';
 import { useSelector, useDispatch } from 'react-redux'
 import { populateUser } from "../slices/userSlice";
+import TextField from "@mui/material/TextField";
+import Modal from "@mui/material/Modal";
+import Button from "@mui/material/Button";
+
+import { makeStyles } from "@mui/styles";
+// import { Modal } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
+import { fetchUser, toLogin } from "../services/userservice";
+// import { spacing } from '@mui/system';
+
+const useStyles = makeStyles((theme) => ({
+  toolbar : {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
+  logo : {
+    display: "flex",
+    alignItems: "center",
+  },
+  e_char: {
+    color: "#ff4500",
+  },
+  modalContainer: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    maxWidth: "50em", 
+    minWidth: "20em",
+    backgroundColor: '#ddd',
+    padding: 15,
+    display: "flex",
+    flexDirection: "column",
+    alignContent: "center"
+  }
+}))
 
 const Header = () => {
-
-  const user = useSelector((state) => state.userReducer.value)
-  const dispatch = useDispatch()
+  console.log("into header...");
+  const countRef = useRef(0);
+  const classes = useStyles();
+  const user = useSelector((state) => state.userReducer.value);
+  const dispatch = useDispatch();
   const settings = ['Profile', 'Logout'];
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [isAuth, setIsAuth] = useState(false);
+  const [openSignin, setOpenSignin] = useState(false);
+  const [isSignin, setIsSignin] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loginName, setLoginName] = useState(null);
+  const [pass, setPass] = useState(null);
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+    // console.log("isAuth:", isAuth);
+    // TODO show login page
+    setOpenSignin(!isAuth);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
+  const showProfile = () => {
+    // TODO show profle page 
+    setAnchorElUser(null);
+  };
+
+  const logout = () => {
+    document.cookie = "x-auth=; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/";
+    document.cookie = "auth=; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/";   
+    setAnchorElUser(null);
+    setIsAuth(false);
+    setOpenSignin(true);
+  };
+
+  const chageStatusOnSuccessLogin = () => {
+    countRef.current++;
+    setIsAuth(true);
+    setOpenSignin(false);
+    setAnchorElUser(null);  
+  }
+
+  useEffect(() => {
+    console.log("useEffect...");
+    const u = fetchUser().then((data) => {
+      // console.log("data in fetchuser")
+      // console.log("effect data : " + JSON.stringify(data));
+      dispatch(populateUser(data));
+      // console.log("effect user : " + JSON.stringify(user));
+      // console.log("exit useEffect...");
+      console.log("..." + data.login);
+      if (data.login) {
+        chageStatusOnSuccessLogin();      
+      }
+      console.log("exit useEffect...");
+    });
+  }, [countRef])
+
+  // console.log("user:" + JSON.stringify(user));
+
+  const handleSignin = async () => {
+    if (loginName && pass) {
+      const isOk = await toLogin(loginName, pass, 'AAdmin');
+      if (isOk) {
+        const u = fetchUser().then((data) => {
+          dispatch(populateUser(data))
+          chageStatusOnSuccessLogin();
+        }); 
+        return    
+      }
+      setErrorMessage("Login failed!, please check the user name or password!");
+    }
+  }
+
   return (
-      <AppBar position="static">
-        <Container>
-          <Toolbar disableGutters>
-            <Box component="div" sx={{ flexGrow: 1, display: "flex", ml:1 }}>
+      <AppBar position="sticky">
+        {/* <Container> */}
+          <Toolbar className={classes.toolbar}>
+            <Box component="div" className={classes.logo}>
               <SiKhanacademy size = "38" color = "orangered" />
-              <Typography
-                variant="h5"
-                noWrap
-                sx = {{ml:1, fontWeight: 500}}
-              >
-                Fun <span className="header_e_char">E</span>ducation
+              <Typography variant="h5" sx={{ml:1, fontWeight: 500}}>
+                Fun <span className={classes.e_char}>E</span>ducation
               </Typography>
             </Box>  
-            <Box sx={{ flexGrow: 0 }}>
+            <Box component="div" >
               {/* <Tooltip title="Open settings"> */}
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Remy Sharp" src="https://picsum.photos/id/3/80/80" />
                 </IconButton>
               {/* </Tooltip> */}
+              { isAuth && 
               <Menu
                 sx={{ mt: '45px' }}
                 id="menu-appbar"
@@ -64,15 +162,87 @@ const Header = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem key="1" onClick={showProfile}>
+                    <Typography textAlign="center">Profile</Typography>
+                </MenuItem>
+                <MenuItem key="2" onClick={logout}>
+                    <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
               </Menu>
+            }
             </Box>
+            <Modal open={openSignin}>
+            <Box component="form" className={classes.modalContainer}>
+              <CloseIcon onClick={() => setOpenSignin(false) }/>
+              <Typography variant="h6" component="h2" sx={{ mt: '1em', alignSelf:'center'}}>
+                Please <a href="#" onClick={() => setIsSignin(true)} >sign in</a> or <a href="#" onClick={() => setIsSignin(false)}>register</a> 
+              </Typography>
+              { !isSignin && 
+              <TextField
+                required
+                label="Username"
+                type="text"
+                sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
+              />
+              }
+              { !isSignin  &&
+              <TextField
+                label="Avatar image url"
+                type="text"
+                sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
+              />
+              }
+              <TextField
+                required
+                label="Email"
+                type="text"
+                sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
+                onChange = {(e) => {
+                  setLoginName(e.target.value);
+                  setErrorMessage(null);
+                }}
+              />
+              <TextField
+                required
+                label="Password"
+                type="password"
+                sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
+                onChange = {(e) => {
+                  setPass(e.target.value);
+                  setErrorMessage(null);
+                }}
+                helperText={errorMessage}
+              />
+              { !isSignin && 
+              <TextField
+                required
+                label="Confirm password"
+                type="password"
+                sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
+              />
+              } 
+             { isSignin && 
+              <Button variant="contained" 
+              color="primary"
+              sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
+              onClick={handleSignin}
+              >
+                Sign in
+              </Button>
+              } 
+
+              { !isSignin && 
+              <Button variant="contained" 
+              color="primary"
+              sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
+              >
+                Register
+              </Button>
+             }
+            </Box>
+            </Modal>
           </Toolbar>
-        </Container>
+        {/* </Container> */}
       </AppBar>
   );
 };

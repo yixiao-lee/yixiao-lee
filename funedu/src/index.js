@@ -4,6 +4,9 @@ import './index.css';
 import App from './App';
 import store from './store/store'
 import { Provider } from 'react-redux'
+// import { ThemeProvider, makeStyles } from "@mui/styles";
+
+// const theme = createMuiTheme();
 
 ReactDOM.render(
   <React.StrictMode>

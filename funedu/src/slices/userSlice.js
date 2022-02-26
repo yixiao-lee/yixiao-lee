@@ -4,11 +4,10 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: {
     value: {
-        id: -1,
+        userId: null,
         name: '',
-        avatar: '', 
-        email: ''
-
+        login: '',
+        avatar: ''
     },
   },
   reducers: {
@@ -17,7 +16,10 @@ export const userSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      Object.assign(state.value, action)
+      console.log("action : " + JSON.stringify(action))
+      Object.assign(state.value, action.payload)
+      console.log("state.value" + JSON.stringify(state.value))
+      
     },
     // decrement: (state) => {
     //   state.value -= 1
