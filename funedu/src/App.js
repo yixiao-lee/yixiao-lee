@@ -8,11 +8,10 @@ import bg from './images/woman-3083379.jpg';
 
 const useStyles = makeStyles((theme) => ({
   main : {
-    // marginTop : "1em",
-    display: "flex",
+    alignSelf: "center",
     minHeight: "100vh",
-    minWidth: "100wh",
-    flexDirection: "column",
+    maxWidth: "1680px",
+    margin: "0px auto",
     backgroundImage: `url(${bg})`,
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center center",

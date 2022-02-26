@@ -5,10 +5,10 @@ import { makeStyles } from "@mui/styles";
 const useStyles = makeStyles((theme) => ({
   slogan : {
     paddingTop: "50vh",
-    paddingLeft: "5%",
-    paddingRight: "5%",
+    paddingLeft: "2%",
+    paddingRight: "2%",
     fontSize: "3em",
-    fontWeight: 500,
+    fontWeight: 600,
     color: "#ff4500",
     fontFamily: "sans-serif"
   }

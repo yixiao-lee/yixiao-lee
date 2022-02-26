@@ -26,4 +26,6 @@ html {
 body {
   font-family: "Roboto", sans-serif;
   background-color: #787d81;
+  max-width: 100%;
+  text-align: center;
 }

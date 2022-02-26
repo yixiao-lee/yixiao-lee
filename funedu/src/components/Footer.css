@@ -6,6 +6,8 @@
     z-index: 999;
     position: absolute;
     bottom: 0;
+    max-Width: 1680px;
+    margin: 0px auto;
     text-align: center;
     font-size: 1em;
     background-color: transparent;

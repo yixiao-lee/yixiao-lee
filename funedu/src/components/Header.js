@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
   logo : {
     display: "flex",
     alignItems: "center",
+    marginLeft: 8,
   },
   e_char: {
     color: "#ff4500",
@@ -44,7 +45,10 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "50em", 
     minWidth: "20em",
     backgroundColor: '#ddd',
-    padding: 15,
+    paddingTop: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 30,
     display: "flex",
     flexDirection: "column",
     alignContent: "center"
@@ -139,8 +143,8 @@ const Header = () => {
             </Box>  
             <Box component="div" >
               {/* <Tooltip title="Open settings"> */}
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt={user.login} src={user.avatar} />
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, marginRight: 2}}>
+                  <Avatar alt={user.login} src={user.avatar} sx={{ width: 36, height: 36 }}/>
                 </IconButton>
               {/* </Tooltip> */}
               { isAuth && 
