@@ -11,7 +11,7 @@ import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import MenuItem from '@mui/material/MenuItem';
 import { useSelector, useDispatch } from 'react-redux'
-import { populateUser } from "../slices/userSlice";
+import { populateUser, resetUser } from "../slices/userSlice";
 import TextField from "@mui/material/TextField";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
@@ -92,6 +92,7 @@ const Header = () => {
     setAnchorElUser(null);
     setIsAuth(false);
     setOpenSignin(true);
+    dispatch(resetUser());
   };
 
   const chageStatusOnSuccessLogin = () => {

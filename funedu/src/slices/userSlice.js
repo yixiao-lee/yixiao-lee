@@ -1,14 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+
+const defaultUser = {
+  userId: null,
+  userName: '',
+  login: '',
+  avatar: 'https://picsum.photos/id/3/80/80',
+  roles: null,
+  createdOn: null
+}
+
+Object.freeze(defaultUser);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
-    value: {
-        userId: null,
-        name: '',
-        login: '',
-        avatar: 'https://picsum.photos/id/3/80/80'
-    },
+    value: defaultUser,
   },
   reducers: {
     populateUser: (state, action) => {
@@ -18,6 +25,12 @@ export const userSlice = createSlice({
       // immutable state based off those changes
       console.log("action : " + JSON.stringify(action))
       Object.assign(state.value, action.payload)
+      console.log("state.value" + JSON.stringify(state.value))
+      
+    },
+    resetUser: (state) => {
+      console.log("resetUser : " + JSON.stringify(defaultUser))
+      Object.assign(state.value, defaultUser)
       console.log("state.value" + JSON.stringify(state.value))
       
     },
@@ -31,6 +44,6 @@ export const userSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { populateUser } = userSlice.actions
+export const { populateUser, resetUser } = userSlice.actions
 
 export default userSlice.reducer
