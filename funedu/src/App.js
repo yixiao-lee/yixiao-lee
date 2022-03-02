@@ -14,8 +14,9 @@ const useStyles = makeStyles((theme) => ({
     margin: "0px auto",
     backgroundImage: `url(${bg})`,
     backgroundRepeat: "no-repeat",
+    backgroundPositionY:"3em",
     backgroundPosition: "center center",
-    backgroundSize: "cover",
+    backgroundSize: "auto 100%",
     backgroundAttachment: "fixed",
     opacity: 0.8
   }
