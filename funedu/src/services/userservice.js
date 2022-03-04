@@ -12,7 +12,7 @@ const fetchUser = async () => {
 }
 
 const toLogin = async (user, pass, appId) => {
-    console.log("input: " + user + pass + appId);
+    // console.log("input: " + user + pass + appId);
     const response = await httpClient.post(`/auth/login`, {
         appId : appId
     }, {
@@ -26,7 +26,7 @@ const toLogin = async (user, pass, appId) => {
     })
     console.log(response)
     if (response && response.status === 200) {
-        console.log(response)
+        // console.log(response)
         return true;
     }
     return false  

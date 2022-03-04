@@ -5,7 +5,7 @@ const defaultUser = {
   userId: null,
   userName: '',
   login: '',
-  avatar: 'https://picsum.photos/id/3/80/80',
+  avatar: '',
   roles: null,
   createdOn: null
 }

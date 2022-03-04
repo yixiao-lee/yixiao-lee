@@ -109,8 +109,8 @@ const Header = () => {
       // console.log("effect data : " + JSON.stringify(data));
       dispatch(populateUser(data));
       // console.log("effect user : " + JSON.stringify(user));
-      console.log("..." + data.login);
-      if (data.login) {
+      console.log("..." + data.userId);
+      if (data.userId) {
         chageStatusOnSuccessLogin();      
       }
       console.log("exit useEffect...");
@@ -149,7 +149,7 @@ const Header = () => {
             <Box component="div" >
               {/* <Tooltip title="Open settings"> */}
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, marginRight: 2}}>
-                  <Avatar alt={user.login} src={user.avatar} sx={{ width: 36, height: 36 }}/>
+                  <Avatar alt={user.userName} src={user.avatar} sx={{ width: 36, height: 36 }}/>
                 </IconButton>
               {/* </Tooltip> */}
               { isAuth && 
