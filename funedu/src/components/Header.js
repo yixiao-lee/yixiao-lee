@@ -20,6 +20,7 @@ import { makeStyles } from "@mui/styles";
 // import { Modal } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { fetchUser, toLogin } from "../services/userservice";
+import { clearAuthCookies } from "../utils/LocalHelper";
 // import { spacing } from '@mui/system';
 
 const useStyles = makeStyles((theme) => ({
@@ -44,14 +45,16 @@ const useStyles = makeStyles((theme) => ({
     width: '50%',
     maxWidth: "50em", 
     minWidth: "20em",
-    backgroundColor: '#ddd',
+    backgroundColor: "#ddd",
     paddingTop: 10,
     paddingLeft: 15,
     paddingRight: 15,
     paddingBottom: 30,
     display: "flex",
     flexDirection: "column",
-    alignContent: "center"
+    alignContent: "center",
+    borderRadius: '0.5em',
+    
   }
 }))
 
@@ -61,7 +64,6 @@ const Header = () => {
   const classes = useStyles();
   const user = useSelector((state) => state.userReducer.value);
   const dispatch = useDispatch();
-  const settings = ['Profile', 'Logout'];
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
   const [openSignin, setOpenSignin] = useState(false);
@@ -87,8 +89,7 @@ const Header = () => {
   };
 
   const logout = () => {
-    document.cookie = "x-auth=; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/";
-    document.cookie = "auth=; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/";   
+    clearAuthCookies();
     setAnchorElUser(null);
     setIsAuth(false);
     setOpenSignin(true);
@@ -104,7 +105,7 @@ const Header = () => {
 
   useEffect(() => {
     console.log("useEffect...");
-    const u = fetchUser().then((data) => {
+    fetchUser().then((data) => {
       // console.log("effect data : " + JSON.stringify(data));
       dispatch(populateUser(data));
       // console.log("effect user : " + JSON.stringify(user));
@@ -122,7 +123,7 @@ const Header = () => {
     if (loginName && pass) {
       const isOk = await toLogin(loginName, pass, 'AAdmin');
       if (isOk) {
-        const u = fetchUser().then((data) => {
+          fetchUser().then((data) => {
           dispatch(populateUser(data))
           chageStatusOnSuccessLogin();
         }); 
@@ -133,7 +134,10 @@ const Header = () => {
   }
 
   return (
-      <AppBar position="sticky">
+      <AppBar position="sticky" sx={{
+        width:'100%',
+        height: '4em'
+      }}>
         {/* <Container> */}
           <Toolbar className={classes.toolbar}>
             <Box component="div" className={classes.logo}>
@@ -176,7 +180,10 @@ const Header = () => {
             </Box>
             <Modal open={openSignin}>
             <Box component="form" className={classes.modalContainer}>
-              <CloseIcon onClick={() => setOpenSignin(false) }/>
+              <CloseIcon sx={{cursor: 'pointer', borderRadius:'0.5em', '&:hover': {
+        color: 'red',
+        backgroundColor: 'white',
+      }}} onClick={() => setOpenSignin(false) }/>
               <Typography variant="h6" component="h2" sx={{ mt: '1em', alignSelf:'center'}}>
                 Please <a href="#" onClick={() => setIsSignin(true)} >sign in</a> or <a href="#" onClick={() => setIsSignin(false)}>register</a> 
               </Typography>

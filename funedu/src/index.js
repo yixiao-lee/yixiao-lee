@@ -4,14 +4,17 @@ import './index.css';
 import App from './App';
 import store from './store/store'
 import { Provider } from 'react-redux'
-// import { ThemeProvider, makeStyles } from "@mui/styles";
+import { ThemeProvider } from "@mui/styles";
+import { createTheme } from '@mui/material';
 
-// const theme = createMuiTheme();
+const theme = createTheme();
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
+      <ThemeProvider theme={theme}>
      <App />
+     </ThemeProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

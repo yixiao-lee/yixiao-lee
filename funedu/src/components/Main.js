@@ -4,11 +4,12 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   slogan : {
+    Height: '100%',
     paddingTop: "50vh",
-    paddingLeft: "1%",
-    paddingRight: "1%",
-    fontSize: "2.9em",
-    fontWeight: 600,
+    paddingLeft: "2%",
+    paddingRight: "2%",
+    fontSize: "2.8em",
+    fontWeight: 500,
     color: "#ff4500",
     fontFamily: "sans-serif"
   }
