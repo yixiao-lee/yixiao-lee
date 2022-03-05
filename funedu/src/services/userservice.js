@@ -32,5 +32,44 @@ const toLogin = async (user, pass, appId) => {
     return false  
 }
 
-export {fetchUser, toLogin}
+const toModifyAvatar = async (userId, avatar) => {
+    // console.log("input: " + user + pass + appId);
+    const response = await httpClient.put(`/api/users/` + userId + '/avatar', {
+        avatar : avatar
+    }, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).catch( (error) => {
+        console.log(error);
+    })
+    console.log(response)
+    if (response && response.status === 200) {
+        // console.log(response)
+        return true;
+    }
+    return false  
+}
+
+const toModifyPassword = async (userId, oldPassword, newPassword) => {
+    // console.log("input: " + user + pass + appId);
+    const response = await httpClient.put(`/api/users/` + userId + '/pass', {
+        oldPassword,
+        newPassword
+    }, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).catch( (error) => {
+        console.log(error);
+    })
+    console.log(response)
+    if (response && response.status === 200) {
+        // console.log(response)
+        return true;
+    }
+    return false  
+}
+
+export {fetchUser, toLogin, toModifyAvatar, toModifyPassword}
 

@@ -72,6 +72,7 @@ const Header = () => {
   const showProfile = () => {
     // TODO show profle page 
     setAnchorElUser(null);
+    navigate("/profile");
   };
 
   const logout = () => {
@@ -80,43 +81,6 @@ const Header = () => {
     dispatch(resetUser());
     navigate("/");
   };
-
-  // const chageStatusOnSuccessLogin = () => {
-  //   countRef.current++;
-  //   setIsAuth(true);
-  //   setOpenSignin(false);
-  //   setAnchorElUser(null);  
-  // }
-
-  // useEffect(() => {
-  //   console.log("useEffect...");
-  //   fetchUser().then((data) => {
-  //     // console.log("effect data : " + JSON.stringify(data));
-  //     dispatch(populateUser(data));
-  //     // console.log("effect user : " + JSON.stringify(user));
-  //     console.log("..." + data.userId);
-  //     if (data.userId) {
-  //       chageStatusOnSuccessLogin();      
-  //     }
-  //     console.log("exit useEffect...");
-  //   });
-  // }, [countRef])
-
-  // console.log("user:" + JSON.stringify(user));
-
-  // const handleSignin = async () => {
-  //   if (loginName && pass) {
-  //     const isOk = await toLogin(loginName, pass, 'AAdmin');
-  //     if (isOk) {
-  //         fetchUser().then((data) => {
-  //         dispatch(populateUser(data))
-  //         chageStatusOnSuccessLogin();
-  //       }); 
-  //       return    
-  //     }
-  //     setErrorMessage("Login failed!, please check the user name or password!");
-  //   }
-  // }
 
   return (
       <AppBar position="sticky" sx={{
@@ -163,79 +127,6 @@ const Header = () => {
               </Menu>
             }
             </Box>
-            {/* <Modal open={openSignin}>
-            <Box component="form" className={classes.modalContainer}>
-              <CloseIcon sx={{cursor: 'pointer', borderRadius:'0.5em', '&:hover': {
-        color: 'red',
-        backgroundColor: 'white',
-      }}} onClick={() => setOpenSignin(false) }/>
-              <Typography variant="h6" component="h2" sx={{ mt: '1em', alignSelf:'center'}}>
-                Please <a href="#" onClick={() => setIsSignin(true)} >sign in</a> or <a href="#" onClick={() => setIsSignin(false)}>register</a> 
-              </Typography>
-              { !isSignin && 
-              <TextField
-                required
-                label="Username"
-                type="text"
-                sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
-              />
-              }
-              { !isSignin  &&
-              <TextField
-                label="Avatar image url"
-                type="text"
-                sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
-              />
-              }
-              <TextField
-                required
-                label="Email"
-                type="text"
-                sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
-                onChange = {(e) => {
-                  setLoginName(e.target.value);
-                  setErrorMessage(null);
-                }}
-              />
-              <TextField
-                required
-                label="Password"
-                type="password"
-                sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
-                onChange = {(e) => {
-                  setPass(e.target.value);
-                  setErrorMessage(null);
-                }}
-                helperText={errorMessage}
-              />
-              { !isSignin && 
-              <TextField
-                required
-                label="Confirm password"
-                type="password"
-                sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
-              />
-              } 
-             { isSignin && 
-              <Button variant="contained" 
-              color="primary"
-              sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
-              onClick={handleSignin}
-              >
-                Sign in
-              </Button>
-              } 
-
-              { !isSignin && 
-              <Button variant="contained" 
-              color="primary"
-              sx={{ mt: '1em', width: "95%", alignSelf:'center'}}
-              >
-                Register
-              </Button>
-             }
-            </Box>
-            </Modal> */}
           </Toolbar>
         {/* </Container> */}
       </AppBar>

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     backgroundPositionY:"4em",
     backgroundPosition: "center",
-    backgroundSize: "auto 100%",
+    backgroundSize: "100% auto",
     backgroundAttachment: "fixed",
     opacity: 0.8
   }
