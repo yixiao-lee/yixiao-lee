@@ -1,11 +1,13 @@
 import React from 'react'
 import Box from "@mui/material/Box"
 import { makeStyles } from "@mui/styles";
+import {Routes, Route} from 'react-router-dom';
+import { Login } from './Login';
 
 const useStyles = makeStyles((theme) => ({
   slogan : {
     Height: '100%',
-    paddingTop: "50vh",
+    paddingTop: "3em",
     paddingLeft: "2%",
     paddingRight: "2%",
     fontSize: "2.8em",
@@ -14,11 +16,20 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "sans-serif"
   }
 }))
+
 const Main = () => {
     const classes = useStyles();
+    const Home = () => (<p>
+      Only with an approved leave slip can you go where the poems and distances in your dreams are!
+      </p>)
+    const Edit = () => (<div> Edit page</div>)
     return (
     <Box component="div" className={classes.slogan}>
-      Only with an approved leave slip can you go where the poems and distances in your dreams are!
+      <Routes>
+        <Route exact path="/" element={<Login />}/>
+        <Route path="home" element={<Home />}/>
+        <Route path="edit" element={<Edit />}/>
+      </Routes>
     </Box>
     )
 }

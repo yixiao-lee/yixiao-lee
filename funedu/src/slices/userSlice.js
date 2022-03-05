@@ -23,15 +23,15 @@ export const userSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      console.log("action : " + JSON.stringify(action))
+      // console.log("action : " + JSON.stringify(action))
       Object.assign(state.value, action.payload)
-      console.log("state.value" + JSON.stringify(state.value))
+      // console.log("state.value" + JSON.stringify(state.value))
       
     },
     resetUser: (state) => {
       console.log("resetUser : " + JSON.stringify(defaultUser))
       Object.assign(state.value, defaultUser)
-      console.log("state.value" + JSON.stringify(state.value))
+      // console.log("state.value" + JSON.stringify(state.value))
       
     },
     // decrement: (state) => {

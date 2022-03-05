@@ -2,9 +2,9 @@
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Main from './components/Main';
-import { Container, Grid } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 import bg from './images/woman-3083379.jpg';
+// import ErrorBoundary from './components/ErrorBoundary';
 
 const useStyles = makeStyles((theme) => ({
   main : {
@@ -29,11 +29,13 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles()
   return (
-    <div className={classes.main}>
-      <Header/>
-      <Main/>
-      <Footer/>
-    </div>
+      <div className={classes.main}>
+        <Header/>
+        {/* <ErrorBoundary> */}
+         <Main/>
+        {/* </ErrorBoundary> */}
+        <Footer/>
+      </div>
   );
 }
 

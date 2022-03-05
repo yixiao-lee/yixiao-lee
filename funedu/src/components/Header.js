@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { SiKhanacademy } from "react-icons/si";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -11,16 +11,11 @@ import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import MenuItem from '@mui/material/MenuItem';
 import { useSelector, useDispatch } from 'react-redux'
-import { populateUser, resetUser } from "../slices/userSlice";
-import TextField from "@mui/material/TextField";
-import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
+import { resetUser } from "../slices/userSlice";
 
 import { makeStyles } from "@mui/styles";
-// import { Modal } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
-import { fetchUser, toLogin } from "../services/userservice";
 import { clearAuthCookies } from "../utils/LocalHelper";
+import { useNavigate } from "react-router-dom";
 // import { spacing } from '@mui/system';
 
 const useStyles = makeStyles((theme) => ({
@@ -60,23 +55,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = () => {
   console.log("into header...");
-  const countRef = useRef(0);
+  let navigate = useNavigate();
   const classes = useStyles();
   const user = useSelector((state) => state.userReducer.value);
   const dispatch = useDispatch();
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [isAuth, setIsAuth] = useState(false);
-  const [openSignin, setOpenSignin] = useState(false);
-  const [isSignin, setIsSignin] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loginName, setLoginName] = useState(null);
-  const [pass, setPass] = useState(null);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-    // console.log("isAuth:", isAuth);
-    // TODO show login page
-    setOpenSignin(!isAuth);
   };
 
   const handleCloseUserMenu = () => {
@@ -91,47 +77,46 @@ const Header = () => {
   const logout = () => {
     clearAuthCookies();
     setAnchorElUser(null);
-    setIsAuth(false);
-    setOpenSignin(true);
     dispatch(resetUser());
+    navigate("/");
   };
 
-  const chageStatusOnSuccessLogin = () => {
-    countRef.current++;
-    setIsAuth(true);
-    setOpenSignin(false);
-    setAnchorElUser(null);  
-  }
+  // const chageStatusOnSuccessLogin = () => {
+  //   countRef.current++;
+  //   setIsAuth(true);
+  //   setOpenSignin(false);
+  //   setAnchorElUser(null);  
+  // }
 
-  useEffect(() => {
-    console.log("useEffect...");
-    fetchUser().then((data) => {
-      // console.log("effect data : " + JSON.stringify(data));
-      dispatch(populateUser(data));
-      // console.log("effect user : " + JSON.stringify(user));
-      console.log("..." + data.userId);
-      if (data.userId) {
-        chageStatusOnSuccessLogin();      
-      }
-      console.log("exit useEffect...");
-    });
-  }, [countRef])
+  // useEffect(() => {
+  //   console.log("useEffect...");
+  //   fetchUser().then((data) => {
+  //     // console.log("effect data : " + JSON.stringify(data));
+  //     dispatch(populateUser(data));
+  //     // console.log("effect user : " + JSON.stringify(user));
+  //     console.log("..." + data.userId);
+  //     if (data.userId) {
+  //       chageStatusOnSuccessLogin();      
+  //     }
+  //     console.log("exit useEffect...");
+  //   });
+  // }, [countRef])
 
   // console.log("user:" + JSON.stringify(user));
 
-  const handleSignin = async () => {
-    if (loginName && pass) {
-      const isOk = await toLogin(loginName, pass, 'AAdmin');
-      if (isOk) {
-          fetchUser().then((data) => {
-          dispatch(populateUser(data))
-          chageStatusOnSuccessLogin();
-        }); 
-        return    
-      }
-      setErrorMessage("Login failed!, please check the user name or password!");
-    }
-  }
+  // const handleSignin = async () => {
+  //   if (loginName && pass) {
+  //     const isOk = await toLogin(loginName, pass, 'AAdmin');
+  //     if (isOk) {
+  //         fetchUser().then((data) => {
+  //         dispatch(populateUser(data))
+  //         chageStatusOnSuccessLogin();
+  //       }); 
+  //       return    
+  //     }
+  //     setErrorMessage("Login failed!, please check the user name or password!");
+  //   }
+  // }
 
   return (
       <AppBar position="sticky" sx={{
@@ -152,7 +137,7 @@ const Header = () => {
                   <Avatar alt={user.userName} src={user.avatar} sx={{ width: 36, height: 36 }}/>
                 </IconButton>
               {/* </Tooltip> */}
-              { isAuth && 
+              { user.userId && 
               <Menu
                 sx={{ mt: '45px' }}
                 id="menu-appbar"
@@ -178,7 +163,7 @@ const Header = () => {
               </Menu>
             }
             </Box>
-            <Modal open={openSignin}>
+            {/* <Modal open={openSignin}>
             <Box component="form" className={classes.modalContainer}>
               <CloseIcon sx={{cursor: 'pointer', borderRadius:'0.5em', '&:hover': {
         color: 'red',
@@ -250,7 +235,7 @@ const Header = () => {
               </Button>
              }
             </Box>
-            </Modal>
+            </Modal> */}
           </Toolbar>
         {/* </Container> */}
       </AppBar>
