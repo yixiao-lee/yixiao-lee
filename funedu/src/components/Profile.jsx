@@ -1,23 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import Paper from '@mui/material/Paper';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
 import Switch from '@mui/material/Switch';
 import Snackbar from '@mui/material/Snackbar';
-import EmailIcon from '@mui/icons-material/Email';
 import TextField from '@mui/material/TextField';
-import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import { fetchUser, toModifyAvatar, toModifyPassword } from '../services/userservice';
 import { useSelector, useDispatch } from 'react-redux'
 import { populateUser } from "../slices/userSlice";
-import { format } from 'date-fns'
+import { PageTitle } from './PageTitle';
+import { ProfileItem } from './ProfileItem';
 
 export const Profile = () => {
     const user = useSelector((state) => state.userReducer.value);
@@ -119,68 +112,27 @@ export const Profile = () => {
 
     const postUpdate = (message) => {
         setTipMessage(message);
+        setModifyAvatar(false);
+        setModifyPassword(false);
     }
 
+    // style
+    const editLineStyle = { mt: '0.7em', width: "90%" };
+
     return (
-        <Paper elevation={12} sx={{ heigh: '10em', maxWidth: '20em', margin: 'auto', pb: '1em' }} >
-            <Typography variant="h5" sx={{ backgroundColor: '#1976D2', p: '0.3em', color: '#eee' }}>
-                Profile
-            </Typography>
-            <Divider variant="middle" />
-            <Box component={'div'} sx={{ display: 'flex', m: '0.2em', p: '0.2em', textAlign: 'center', alignItems: "center" }}>
-                <ListItem sx={{ maxWidth: '10em' }}>
-                    <ListItemAvatar>
-                        <Avatar alt={user.userName}
-                            sx={{ width: 86, height: 86 }} src={user.avatar}
-                            onClick={() => {
-                                setModifyAvatar(!modifyAvatar);
-                            }}
-                        >
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary={<Typography
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="h6"
-                        color="text.primary"
-                    >
-                        {user.userName}
-                    </Typography>} secondary={
-                        <>
-                            <Typography
-                                sx={{ display: 'inline' }}
-                                component="span"
-                                variant="subtitle2"
-                                color="text.primary"
-                            >
-                                Created Date :
-                            </Typography>
-                            {/* {user.createdOn} */}
-                            {format(new Date(user.createdOn), 'yyyy-dd-MM HH:ss:mm')}
-                        </>
-                    } sx={{ marginLeft: '0.1em' }} />
-                </ListItem>
-                <Box component='div'>
-                    <Box component='div' sx={{ display: 'flex', alignItems: 'center', pt: '0.1em' }}>
-                        <EmailIcon fontSize="small" />
-                        <Typography sx={{ pl: '0.2em' }} variant="subtitle2" color="text.secondary">
-                            {user.login}
-                        </Typography>
-                    </Box>
-                    <Box component='div' sx={{ display: 'flex', alignItems: 'center', pt: '0.1em' }}>
-                        <PhoneAndroidIcon fontSize="small" />
-                        <Typography sx={{ pl: '0.2em' }} variant="subtitle2" color="text.secondary">
-                            +86 13810668830
-                        </Typography>
-                    </Box>
-                    <Box component='div' sx={{ display: 'flex', alignItems: 'center', pt: '0.1em' }}>
-                        <PermIdentityIcon fontSize="small" />
-                        <Typography sx={{ pl: '0.2em' }} variant="subtitle2" color="text.secondary">
-                            {user.userId}
-                        </Typography>
-                    </Box>
-                </Box>
-            </Box >
+        <Paper elevation={12} sx={{
+            heigh: '10em',
+            width: {
+                xs: '100%',
+                sm: '90%'
+            },
+            maxWidth: '45em',
+            margin: 'auto',
+            pb: '1em'
+        }}
+        >
+            <PageTitle title='PROFILE' />
+            <ProfileItem user={user} />
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-around", p: '0.1em 0.4em 0.1em 0.4em' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Switch
@@ -188,7 +140,7 @@ export const Profile = () => {
                         onChange={toggleModifyAvatar}
                         color="primary"
                     />
-                    <Typography sx={{ fontSize: '0.3em', pl: '0.1em' }}>
+                    <Typography sx={{ fontSize: '0.7em', pl: '0.1em' }}>
                         Modify avatar
                     </Typography>
                 </Box>
@@ -198,7 +150,7 @@ export const Profile = () => {
                         onChange={toggleModifyPassword}
                         color="primary"
                     />
-                    <Typography sx={{ fontSize: '0.3em', pl: '0.1em' }}>
+                    <Typography sx={{ fontSize: '0.7em', pl: '0.1em' }}>
                         Modify password
                     </Typography>
                 </Box>
@@ -211,13 +163,13 @@ export const Profile = () => {
                         label="New avatar"
                         type="text"
                         // value={avatar}
-                        sx={{ mt: '0.3em', width: "90%", alignSelf: 'center' }}
+                        sx={editLineStyle}
                         onKeyUp={handleAvatarChange}
                         helperText={avatarTip}
                     />
                     <Button variant="contained"
                         color="primary"
-                        sx={{ mt: '0.3em', width: "90%", alignSelf: 'center' }}
+                        sx={editLineStyle}
                         onClick={handleModifyAvatar}
                     >
                         Modify Avatar
@@ -231,8 +183,7 @@ export const Profile = () => {
                         required
                         label="Old password"
                         type="password"
-                        // value={oldPassword}
-                        sx={{ mt: '0.3em', width: "90%" }}
+                        sx={editLineStyle}
                         onKeyUp={handleOldPasswordChange}
                         helperText={oldPasswordTip}
                     />
@@ -240,8 +191,7 @@ export const Profile = () => {
                         required
                         label="New password"
                         type="password"
-                        // value={newPassword}
-                        sx={{ mt: '0.3em', width: "90%" }}
+                        sx={editLineStyle}
                         onKeyUp={handleNewPasswordChange}
                         helperText={newPasswordTip}
                     />
@@ -249,14 +199,13 @@ export const Profile = () => {
                         required
                         label="Confirm new password"
                         type="password"
-                        // value={confirmMewPassword}
-                        sx={{ mt: '0.3em', width: "90%" }}
+                        sx={editLineStyle}
                         onKeyUp={handleConfirmNewPasswordChange}
                         helperText={confirmMewPasswordTip}
                     />
                     <Button variant="contained"
                         color="primary"
-                        sx={{ mt: '0.3em', width: "90%" }}
+                        sx={editLineStyle}
                         onClick={handleModifyPassword}
                     >
                         Modify Password

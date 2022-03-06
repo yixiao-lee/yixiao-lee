@@ -7,6 +7,7 @@ const defaultUser = {
   login: '',
   avatar: '',
   roles: null,
+  mobile: 'xxx-xxxx',
   createdOn: null
 }
 
